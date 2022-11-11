@@ -22,17 +22,20 @@ ITALICS='\033[3m'
 
 # ALIAS
 # directories
-alias vanbilt='cd ~/dev/vanbilt';
-alias globodon='cd ~/dev/globodon';
 alias skypew='skype -d globodon'
 alias skypep='skype -d gmail'
+
+alias vanbilt='cd ~/dev/vanbilt';
+alias globodon='cd ~/dev/globodon';
+
 alias tilbilt='tlx -t vanbilt -d /home/vanbilt/dev/vanbilt/'
+alias tiltools='tlx -t "dm helper" -d /home/vanbilt/dev/vanbilt/bash-docker-tools/ -c ./tools-menu.sh'
+
 alias tilglobo='tlx -t globodon -d /home/vanbilt/dev/globodon/'
 alias tildm='tlx -t "dm src" -d /home/vanbilt/dev/globodon/dataminer-eric'
+alias tilpro='tlx -t "protractor" -d /home/vanbilt/dev/globodon/dataminer-eric/web/src/test/js/'
 alias tildata='tlx -t "data-afdp src" -d /home/vanbilt/dev/globodon/data-afdp/'
 alias tilbrb='tlx -t "brb web src" -d /home/vanbilt/dev/globodon/brbweb/'
-alias tiltools='tlx -t "dm helper" -d /home/vanbilt/dev/vanbilt/bash-docker-tools/ -c ./tools-menu.sh'
-alias tilpro='tlx -t "protractor" -d /home/vanbilt/dev/globodon/dataminer-eric/web/src/test/js/'
 
 alias gitbare='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
@@ -51,19 +54,22 @@ function supdawg () {
 }
 
 function alias-help () {
-  echo -e "  ${GREEN}vanbilt${NONE}:         ${BOLD}${BLUE}cd${NONE} into ${ITALICS}${YELLOW}\`/home/vanbilt/dev/vanbilt\`${NONE}"
-  echo -e "  ${GREEN}globodon${NONE}:        ${BOLD}${BLUE}cd${NONE} into ${ITALICS}${YELLOW}\`/home/vanbilt/dev/globodon\`${NONE}"
   echo -e "  ${GREEN}skypew[ork]${NONE}:     ${BOLD}${BLUE}Skype${NONE} - singed into ${ITALICS}${YELLOW}Globodon${NONE} account"
   echo -e "  ${GREEN}skypep[ersonal]${NONE}: ${BOLD}${BLUE}Skype${NONE} - singed into ${ITALICS}${YELLOW}Gmail${NONE} account"
-  echo -e "  ${GREEN}tilbilt${NONE}:         New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`vanbilt\`${NONE}"
-  echo -e "  ${GREEN}tilglobo${NONE}:        New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon\`${NONE}"
-  echo -e "  ${GREEN}tildm${NONE}:           New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`dataminer-eric\`${NONE}"
-  echo -e "  ${GREEN}tildata${NONE}:         New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`datam-afdp\`${NONE}"
-  echo -e "  ${GREEN}tiltools${NONE}:        New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`vanbilt/dataminer-tools\`${NONE}"
-  echo -e "  ${GREEN}tilpro${NONE}:          New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`web/src/test/js/\`${NONE}"
-  echo -e "  ${GREEN}tilbrb${NONE}:          New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`brb\`${NONE}"
   echo ""
-  echo -e "  ${GREEN}resound${NONE}:         ${BOLD}${BLUE}ALSA / PulseAudio${NONE} ${ITALICS}${YELLOW}force quit and reload${NONE}"
+  echo -e "  ${GREEN}vanbilt${NONE}:         ${BOLD}${BLUE}cd${NONE} into ${ITALICS}${YELLOW}\`/home/vanbilt/dev/vanbilt\`${NONE}"
+  echo -e "  ${GREEN}globodon${NONE}:        ${BOLD}${BLUE}cd${NONE} into ${ITALICS}${YELLOW}\`/home/vanbilt/dev/globodon\`${NONE}"
+  echo ""
+  echo -e "  ${GREEN}tilbilt${NONE}:         New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`vanbilt\`${NONE}"
+  echo -e "  ${GREEN}tiltools${NONE}:        New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`vanbilt/bash-docker-tools\`${NONE}"
+  echo ""
+  echo -e "  ${GREEN}tilglobo${NONE}:        New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon\`${NONE}"
+  echo -e "  ${GREEN}tildm${NONE}:           New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric\`${NONE}"
+  echo -e "  ${GREEN}tilpro${NONE}:          New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric/web/src/test/js/\`${NONE}"
+  echo -e "  ${GREEN}tildata${NONE}:         New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/datam-afdp\`${NONE}"
+  echo -e "  ${GREEN}tilbrb${NONE}:          New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/brbweb\`${NONE}"
+  echo ""
+  echo -e "  ${GREEN}gitbare${NONE}:         ${BOLD}${BLUE}git commands alias ${NONE}for bare git repo ${ITALICS}${YELLOW}\`dotfiles\`${NONE}"
   echo ""
   echo -e "  ${GREEN}mkcd${NONE}:            ${BOLD}${BLUE}mkdir && cd${NONE} Make a new directory and cd into it"
   echo -e "  ${GREEN}gs${NONE}:              ${BOLD}${BLUE}git${NONE} ${ITALICS}${YELLOW}status${NONE}"
