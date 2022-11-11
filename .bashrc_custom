@@ -1,0 +1,170 @@
+#!/bin/bash
+########################
+#                      #
+# CUSTOM BASH COMMANDS #
+#                      #
+########################
+
+# COLORS
+INV='\e[7m'
+NONE='\033[0m'
+RED='\033[31m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+CYAN='\033[36m'
+BLUE='\033[34m'
+BOLD='\033[1m'
+ITALICS='\033[3m'
+# NOT USED YET
+# PURPLE='\033[35m'
+# WHITE='\033[37m'
+# UNDERLINE='\033[4m'
+
+# ALIAS
+# directories
+alias vanbilt='cd ~/dev/vanbilt';
+alias globodon='cd ~/dev/globodon';
+alias skypew='skype -d globodon'
+alias skypep='skype -d gmail'
+alias tilbilt='tlx -t vanbilt -d /home/vanbilt/dev/vanbilt/'
+alias tilglobo='tlx -t globodon -d /home/vanbilt/dev/globodon/'
+alias tildm='tlx -t "dm src" -d /home/vanbilt/dev/globodon/dataminer-eric'
+alias tildata='tlx -t "data-afdp src" -d /home/vanbilt/dev/globodon/data-afdp/'
+alias tilbrb='tlx -t "brb web src" -d /home/vanbilt/dev/globodon/brbweb/'
+alias tiltools='tlx -t "dm helper" -d /home/vanbilt/dev/vanbilt/bash-docker-tools/ -c ./tools-menu.sh'
+alias tilpro='tlx -t "protractor" -d /home/vanbilt/dev/globodon/dataminer-eric/web/src/test/js/'
+
+alias gitbare='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+
+# make a directory and then cd into it
+function mkcd () {
+  mkdir -p -- "$1" && cd -P -- "$1" || return;
+}
+
+# commands
+# system
+function supdawg () {
+  echo -e "\n${GREEN}EXECUTING: ${NONE}sudo apt update\n"
+  sudo apt update
+  echo -e "\n${GREEN}EXECUTING: ${NONE}apt list --upgradable\n"
+  apt list --upgradable
+}
+
+function alias-help () {
+  echo -e "  ${GREEN}vanbilt${NONE}:         ${BOLD}${BLUE}cd${NONE} into ${ITALICS}${YELLOW}\`/home/vanbilt/dev/vanbilt\`${NONE}"
+  echo -e "  ${GREEN}globodon${NONE}:        ${BOLD}${BLUE}cd${NONE} into ${ITALICS}${YELLOW}\`/home/vanbilt/dev/globodon\`${NONE}"
+  echo -e "  ${GREEN}skypew[ork]${NONE}:     ${BOLD}${BLUE}Skype${NONE} - singed into ${ITALICS}${YELLOW}Globodon${NONE} account"
+  echo -e "  ${GREEN}skypep[ersonal]${NONE}: ${BOLD}${BLUE}Skype${NONE} - singed into ${ITALICS}${YELLOW}Gmail${NONE} account"
+  echo -e "  ${GREEN}tilbilt${NONE}:         New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`vanbilt\`${NONE}"
+  echo -e "  ${GREEN}tilglobo${NONE}:        New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon\`${NONE}"
+  echo -e "  ${GREEN}tildm${NONE}:           New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`dataminer-eric\`${NONE}"
+  echo -e "  ${GREEN}tildata${NONE}:         New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`datam-afdp\`${NONE}"
+  echo -e "  ${GREEN}tiltools${NONE}:        New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`vanbilt/dataminer-tools\`${NONE}"
+  echo -e "  ${GREEN}tilpro${NONE}:          New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`web/src/test/js/\`${NONE}"
+  echo -e "  ${GREEN}tilbrb${NONE}:          New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`brb\`${NONE}"
+  echo ""
+  echo -e "  ${GREEN}resound${NONE}:         ${BOLD}${BLUE}ALSA / PulseAudio${NONE} ${ITALICS}${YELLOW}force quit and reload${NONE}"
+  echo ""
+  echo -e "  ${GREEN}mkcd${NONE}:            ${BOLD}${BLUE}mkdir && cd${NONE} Make a new directory and cd into it"
+  echo -e "  ${GREEN}gs${NONE}:              ${BOLD}${BLUE}git${NONE} ${ITALICS}${YELLOW}status${NONE}"
+  echo -e "  ${GREEN}myip${NONE}:            ${BOLD}${BLUE}myip${NONE} ${ITALICS}${YELLOW}External IP${NONE} [i] ${ITALICS}${YELLOW}Internal IP${NONE}"
+}
+
+function myip () {
+  if [ "$1" == 'i' ]; then
+    IP=$(hostname -I | cut -d' ' -f1);
+    echo -e "${GREEN}${BOLD}Internal IP${NONE} is: ${BLUE}${BOLD}$IP";
+  else
+    IP=$(curl -s ipinfo.io/ip);
+    echo -e "${GREEN}${BOLD}External IP${NONE} is:${BLUE}${BOLD} $IP";
+  fi
+}
+
+function cd {
+  builtin cd "$@" && ls -al
+}
+
+# git
+alias gs='git status || ls -al'
+
+# terminal
+function join_array { local IFS="$1"; shift; echo "$*"; }
+
+function ellipsedPath {
+  local paths=($(echo $PWD | tr "/" " "))
+  local w=""
+
+  if [ "${paths[0]}" == "home" -a "${paths[1]}" == "${whoami}" ]; then
+    w='~'
+    paths=(${paths[*]:2})
+  else
+    w="/${paths[0]}"
+    paths=(${paths[*]:1})
+  fi;
+
+  if (( ${#paths[@]} >= 3 )); then
+    w="$w/..."
+    paths=(${paths[@]: -2})
+  fi;
+
+  w="$(join_array "/" $w ${paths[*]})"
+
+  echo $w
+}
+
+# git
+function gitIsAhead() {
+  (git status 2>/dev/null | grep -q 'ahead' && echo "true") || echo ""
+}
+
+function gitIsBehind {
+  (git status 2>/dev/null | grep -q 'behind' && echo "true") || echo ""
+}
+
+function gitNumCommitsDiff {
+  (git status 2>/dev/null | egrep -o "by\s[0-9]+\s" | cut -d' ' -f2) || echo ""
+}
+
+function gitCurrentBranch {
+  (git branch 2>/dev/null | grep -i '*' | cut -d' ' -f2) || echo ""
+}
+
+function gitDiffRemote {
+  local num=$(gitNumCommitsDiff)
+  local isAhead=$(gitIsAhead)
+  local isBehind=$(gitIsBehind)
+  local symbol=
+
+  if [ "$isAhead" = "true" ]; then
+    symbol="\xE2\x86\x91"
+  fi;
+
+  if [ "$isBehind" = "true" ]; then
+    symbol="\xE2\x86\x93"
+  fi;
+
+  echo -e "$symbol$num"
+}
+
+function hashtag {
+  echo "#"
+}
+
+function currentTime {
+  echo "[$blue\@$cstop]"
+}
+
+function userHost {
+  echo "\u"
+}
+
+cstop="\[\e[m\]"
+grey="\[\e[30m\]"
+green="\[\e[32m\]"
+yellow="\[\e[33m\]"
+blue="\[\e[34m\]"
+
+export PS1="$(currentTime) $(userHost):\$(ellipsedPath)$grey$(hashtag)$cstop\$(test '`gitIsAhead`' == 'true' && printf $green)\$(test '`gitIsBehind`' == 'true' && printf $yellow)\$(gitDiffRemote)$cstop$ \[$(tput sgr0)\]"
+
+# set PATH so it includes user's private bin directories
+PATH=$PATH:$HOME/bin:$HOME/.local/bin:$HOME/.local/scripts
