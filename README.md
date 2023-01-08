@@ -18,3 +18,9 @@ gitbare add /path/to/dotfile
 gitbare commit
 gitbare push
 ```
+
+## Answers to Questions
+
+[Article](https://www.atlassian.com/git/tutorials/dotfiles)
+
+[Video](https://www.youtube.com/watch?v=tBoLDpTWVOM)
