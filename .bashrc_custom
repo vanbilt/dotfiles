@@ -6,9 +6,7 @@
 ########################
 
 # COLORS
-INV='\e[7m'
 NONE='\033[0m'
-RED='\033[31m'
 GREEN='\033[32m'
 YELLOW='\033[33m'
 CYAN='\033[36m'
@@ -16,6 +14,8 @@ BLUE='\033[34m'
 BOLD='\033[1m'
 ITALICS='\033[3m'
 # NOT USED YET
+# INV='\e[7m'
+# RED='\033[31m'
 # PURPLE='\033[35m'
 # WHITE='\033[37m'
 # UNDERLINE='\033[4m'
@@ -47,33 +47,20 @@ function mkcd () {
 # commands
 # system
 function supdawg () {
-  echo -e "\n${GREEN}EXECUTING: ${NONE}sudo apt update\n"
-  sudo apt update
-  echo -e "\n${GREEN}EXECUTING: ${NONE}apt list --upgradable\n"
-  apt list --upgradable
-}
+  # SUPDATE=(sudo apt update)
 
-function alias-help () {
-  echo -e "  ${GREEN}skypew[ork]${NONE}:     ${BOLD}${BLUE}Skype${NONE} - singed into ${ITALICS}${YELLOW}Globodon${NONE} account"
-  echo -e "  ${GREEN}skypep[ersonal]${NONE}: ${BOLD}${BLUE}Skype${NONE} - singed into ${ITALICS}${YELLOW}Gmail${NONE} account"
-  echo ""
-  echo -e "  ${GREEN}vanbilt${NONE}:         ${BOLD}${BLUE}cd${NONE} into ${ITALICS}${YELLOW}\`/home/vanbilt/dev/vanbilt\`${NONE}"
-  echo -e "  ${GREEN}globodon${NONE}:        ${BOLD}${BLUE}cd${NONE} into ${ITALICS}${YELLOW}\`/home/vanbilt/dev/globodon\`${NONE}"
-  echo ""
-  echo -e "  ${GREEN}tilbilt${NONE}:         New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`vanbilt\`${NONE}"
-  echo -e "  ${GREEN}tiltools${NONE}:        New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`vanbilt/bash-docker-tools\`${NONE}"
-  echo ""
-  echo -e "  ${GREEN}tilglobo${NONE}:        New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon\`${NONE}"
-  echo -e "  ${GREEN}tildm${NONE}:           New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric\`${NONE}"
-  echo -e "  ${GREEN}tilpro${NONE}:          New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric/web/src/test/js/\`${NONE}"
-  echo -e "  ${GREEN}tildata${NONE}:         New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/datam-afdp\`${NONE}"
-  echo -e "  ${GREEN}tilbrb${NONE}:          New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/brbweb\`${NONE}"
-  echo ""
-  echo -e "  ${GREEN}gitbare${NONE}:         ${BOLD}${BLUE}git commands alias ${NONE}for bare git repo ${ITALICS}${YELLOW}\`dotfiles\`${NONE}"
-  echo ""
-  echo -e "  ${GREEN}mkcd${NONE}:            ${BOLD}${BLUE}mkdir && cd${NONE} Make a new directory and cd into it"
-  echo -e "  ${GREEN}gs${NONE}:              ${BOLD}${BLUE}git${NONE} ${ITALICS}${YELLOW}status${NONE}"
-  echo -e "  ${GREEN}myip${NONE}:            ${BOLD}${BLUE}myip${NONE} ${ITALICS}${YELLOW}External IP${NONE} [i] ${ITALICS}${YELLOW}Internal IP${NONE}"
+  echo -e "\n  ${GREEN}EXECUTING: ${NONE}sudo apt update\n"
+  UPDATE=$( sudo apt update 2>&1 )
+
+  # no need to run any further commands if: "All packages are up to date."
+  match='All packages are up to date.'
+  if [[ -z "${UPDATE}" ]] || [[ $UPDATE == *$match* ]]; then
+    echo -e "${CYAN}  It appears all packages are currently up-to-date${NONE}\n"
+  else
+    echo -e "${CYAN}  It appears some packages can be updated.${NONE}"
+    echo -e "\n  ${GREEN}EXECUTING: ${NONE}apt list --upgradable\n"
+    apt list --upgradable
+  fi
 }
 
 function myip () {
@@ -91,7 +78,35 @@ function cd {
 }
 
 # git
-alias gs='git status || ls -al'
+alias gs='git status || ls -la'
+alias atgloboconfig='git config --local user.email "avandrey@globodon.com"'
+alias atgithubconfig='git config --local user.email "aaron.vandrey@gmail.com"'
+
+function alias-help () {
+  echo -e "  ${GREEN}skypew[ork]${NONE}:     ${BOLD}${BLUE}Skype${NONE} - signed into ${ITALICS}${YELLOW}Globodon${NONE} account"
+  echo -e "  ${GREEN}skypep[ersonal]${NONE}: ${BOLD}${BLUE}Skype${NONE} - signed into ${ITALICS}${YELLOW}Gmail${NONE} account"
+  echo ""
+  echo -e "  ${GREEN}vanbilt${NONE}:         ${BOLD}${BLUE}cd${NONE} into ${ITALICS}${YELLOW}\`/home/vanbilt/dev/vanbilt\`${NONE}"
+  echo -e "  ${GREEN}globodon${NONE}:        ${BOLD}${BLUE}cd${NONE} into ${ITALICS}${YELLOW}\`/home/vanbilt/dev/globodon\`${NONE}"
+  echo ""
+  echo -e "  ${GREEN}tilbilt${NONE}:         New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`vanbilt\`${NONE}"
+  echo -e "  ${GREEN}tiltools${NONE}:        New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`vanbilt/bash-docker-tools\`${NONE}"
+  echo ""
+  echo -e "  ${GREEN}tilglobo${NONE}:        New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon\`${NONE}"
+  echo -e "  ${GREEN}tildm${NONE}:           New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric\`${NONE}"
+  echo -e "  ${GREEN}tilpro${NONE}:          New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric/web/src/test/js/\`${NONE}"
+  echo -e "  ${GREEN}tildata${NONE}:         New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/datam-afdp\`${NONE}"
+  echo -e "  ${GREEN}tilbrb${NONE}:          New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/brbweb\`${NONE}"
+  echo ""
+  echo -e "  ${GREEN}gitbare${NONE}:         ${BOLD}${BLUE}git commands alias ${NONE}for bare git repo ${ITALICS}${YELLOW}\`dotfiles\`${NONE}"
+  echo ""
+  echo -e "  ${GREEN}mkcd${NONE}:            ${BOLD}${BLUE}mkdir && cd${NONE} Make a new directory and cd into it"
+  echo -e "  ${GREEN}myip${NONE}:            ${BOLD}${BLUE}myip${NONE} ${ITALICS}${YELLOW}External IP${NONE} [i] ${ITALICS}${YELLOW}Internal IP${NONE}"
+  echo ""
+  echo -e "  ${GREEN}gs${NONE}:              ${BOLD}${BLUE}git status${NONE} ${ITALICS}${YELLOW}- OR -${NONE} ${BOLD}${BLUE}ls -la${NONE}"
+  echo -e "  ${GREEN}atgloboconfig${NONE}:   ${BOLD}${BLUE}git config local email to: ${NONE} ${ITALICS}${YELLOW}avandrey@globodon.com${NONE}"
+  echo -e "  ${GREEN}atgithubconfig${NONE}:  ${BOLD}${BLUE}git config local email to: ${NONE} ${ITALICS}${YELLOW}aaron.vandrey@gmail.com${NONE}"
+}
 
 # terminal
 function join_array { local IFS="$1"; shift; echo "$*"; }
