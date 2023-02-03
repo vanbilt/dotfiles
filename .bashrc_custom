@@ -77,6 +77,15 @@ function cd {
   builtin cd "$@" && ls -al
 }
 
+function mount-ext {
+  sudo mkdir -p ~/my/external
+  sudo mount -t vfat /dev/sda1 ~/my/external -o uid=1000,gid=1000,utf8,dmask=027,fmask=137
+}
+
+function umount-ext {
+  sudo umount ~/my/external
+}
+
 # git
 alias gs='git status || ls -la'
 alias atgloboconfig='git config --local user.email "avandrey@globodon.com"'
@@ -102,6 +111,9 @@ function alias-help () {
   echo ""
   echo -e "  ${GREEN}mkcd${NONE}:            ${BOLD}${BLUE}mkdir && cd${NONE} Make a new directory and cd into it"
   echo -e "  ${GREEN}myip${NONE}:            ${BOLD}${BLUE}myip${NONE} ${ITALICS}${YELLOW}External IP${NONE} [i] ${ITALICS}${YELLOW}Internal IP${NONE}"
+  echo ""
+  echo -e "  ${GREEN}mount-ext${NONE}:       ${BOLD}${BLUE}mount ${NONE} ${ITALICS}${YELLOW}/dev/sda1${NONE} to ${ITALICS}${YELLOW}~/my/external${NONE}"
+  echo -e "  ${GREEN}umount-ext${NONE}:      ${BOLD}${BLUE}umount ${NONE} ${ITALICS}${YELLOW}~/my/external${NONE}"
   echo ""
   echo -e "  ${GREEN}gs${NONE}:              ${BOLD}${BLUE}git status${NONE} ${ITALICS}${YELLOW}- OR -${NONE} ${BOLD}${BLUE}ls -la${NONE}"
   echo -e "  ${GREEN}atgloboconfig${NONE}:   ${BOLD}${BLUE}git config local email to: ${NONE} ${ITALICS}${YELLOW}avandrey@globodon.com${NONE}"
