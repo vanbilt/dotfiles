@@ -82,9 +82,9 @@ UUID=0EB4-94A2
 function mount-ext {
   if lsblk -f | grep -wq $UUID; then
     echo "Found: $LABEL (UUID: $UUID)."
-    echo "Mounting for local use at: /home/vanbilt/my/external"
-    mkdir -p ~/my/external
-    sudo mount -t vfat -U 0EB4-94A2 ~/my/external -o uid=1000,gid=1000,utf8,dmask=027,fmask=137
+    echo "Mounting for local use at: /home/vanbilt/portable"
+    mkdir -p ~/portable
+    sudo mount -t vfat -U 0EB4-94A2 ~/portable -o uid=1000,gid=1000,utf8,dmask=027,fmask=137
   else
     echo "Unable to locate: $LABEL (UUID: $UUID)"
     echo "If it is physically connected it needs to be disconnected and reconnected."
