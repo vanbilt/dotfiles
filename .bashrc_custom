@@ -6,36 +6,39 @@
 ########################
 
 # COLORS
-NONE='\033[0m'
-GREEN='\033[32m'
-YELLOW='\033[33m'
-CYAN='\033[36m'
 BLUE='\033[34m'
 BOLD='\033[1m'
+CYAN='\033[36m'
+GRAY='\033[30m'
+GREEN='\033[32m'
+INDIGO='\033[38;5;27m'
 ITALICS='\033[3m'
-# NOT USED YET
-# INV='\e[7m'
-# RED='\033[31m'
-# PURPLE='\033[35m'
-# WHITE='\033[37m'
-# UNDERLINE='\033[4m'
+NONE='\033[0m'
+ORANGE='\033[38;5;208m'
+PURPLE='\033[35m'
+RED='\033[31m'
+WHITE='\033[37m'
+YELLOW='\033[33m'
+HOTPINK='\033[38;5;205m'
 
 # ALIAS
 # directories
 alias skypew='skype -d globodon'
 alias skypep='skype -d gmail'
 
-alias vanbilt='cd ~/dev/vanbilt';
+PORTABLE="$HOME/portable"
+DEV="$HOME/dev"
+alias vanbilt='cd ${DEV}/vanbilt';
 alias globodon='cd ~/dev/globodon';
 
-alias tilbilt='tlx -t vanbilt -d /home/vanbilt/dev/vanbilt/'
-alias tiltools='tlx -t "dm helper" -d /home/vanbilt/dev/vanbilt/bash-docker-tools/ -c ./tools-menu.sh'
+alias tilbilt='tlx -t vanbilt -d ${DEV}/vanbilt/'
+alias tiltools='tlx -t "dm helper" -d ${DEV}/vanbilt/bash-docker-tools/ -c ./tools-menu.sh'
 
-alias tilglobo='tlx -t globodon -d /home/vanbilt/dev/globodon/'
-alias tildm='tlx -t "dm src" -d /home/vanbilt/dev/globodon/dataminer-eric'
-alias tilpro='tlx -t "protractor" -d /home/vanbilt/dev/globodon/dataminer-eric/web/src/test/js/'
-alias tildata='tlx -t "data-afdp src" -d /home/vanbilt/dev/globodon/data-afdp/'
-alias tilbrb='tlx -t "brb web src" -d /home/vanbilt/dev/globodon/brbweb/'
+alias tilglobo='tlx -t globodon -d ${DEV}/globodon/'
+alias tildm='tlx -t "dm src" -d ${DEV}/globodon/dataminer-eric'
+alias tilpro='tlx -t "protractor" -d ${DEV}/globodon/dataminer-eric/web/src/test/js/'
+alias tildata='tlx -t "data-afdp src" -d ${DEV}/globodon/data-afdp/'
+alias tilbrb='tlx -t "brb web src" -d ${DEV}/globodon/brbweb/'
 
 alias gitbare='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
@@ -44,10 +47,44 @@ function mkcd () {
   mkdir -p -- "$1" && cd -P -- "$1" || return;
 }
 
+# make the primary Prompt String (PS1) for this terminal different than the default
+setps1() {
+  # UPPER case
+  case ${1^^} in
+  "R" | "RED")
+    ps1color=$RED
+    ;;
+  "O" | "ORANGE")
+    ps1color=$ORANGE
+    ;;
+  "Y" | "YELLOW")
+    ps1color=$YELLOW
+    ;;
+  "G" | "GREEN")
+    ps1color=$GREEN
+    ;;
+  "B" | "BLUE")
+    ps1color=$BLUE
+    ;;
+  "I" | "INDIGO")
+    ps1color=$CYAN
+    ;;
+  "V" | "VIOLET")
+    ps1color=$PURPLE
+    ;;
+  *)
+    ps1color=$HOTPINK
+    ;;
+  esac
+
+  ps="export PS1='${BOLD}${ps1color} _${2} ::>${NONE} '"
+  eval "${ps}"
+}
+
 # commands
 # system
 function supdawg () {
-  # SUPDATE=(sudo apt update)
+  # supdawg came from accidentally typing SUPDATE=(sudo apt update) a lot
 
   echo -e "\n  ${GREEN}EXECUTING: ${NONE}sudo apt update\n"
   UPDATE=$( sudo apt update 2>&1 )
@@ -81,20 +118,20 @@ LABEL=RealApps
 UUID=0EB4-94A2
 function mount-ext {
   if lsblk -f | grep -wq $UUID; then
-    echo "Found: $LABEL (UUID: $UUID)."
-    echo "Mounting for local use at: /home/vanbilt/portable"
-    mkdir -p ~/portable
-    sudo mount -t vfat -U 0EB4-94A2 ~/portable -o uid=1000,gid=1000,utf8,dmask=027,fmask=137
+    echo -e "  ${GREEN}${BOLD}Successfully located${NONE} ${BLUE}${BOLD}Label${NONE}: $LABEL / ${BLUE}${BOLD}UUID:${NONE} $UUID."
+    echo -e "  ${BOLD}Mounting for local use at: ${BLUE}$PORTABLE${NONE}"
+    mkdir -p "$PORTABLE"
+    sudo mount -t vfat -U 0EB4-94A2 "$PORTABLE" -o uid=1000,gid=1000,utf8,dmask=027,fmask=137
   else
-    echo "Unable to locate: $LABEL (UUID: $UUID)"
-    echo "If it is physically connected it needs to be disconnected and reconnected."
+    echo -e "  ${RED}${BOLD}Unable to locate:${NONE} $LABEL (UUID: $UUID).${NONE}"
+    echo -e "  ${YELLOW}${ITALICS}If it is physically connected it needs to be disconnected and reconnected.${NONE}"
   fi
 }
 
 function umount-ext {
   sudo umount /dev/disk/by-uuid/$UUID
   sudo eject /dev/disk/by-uuid/$UUID
-  echo "$LABEL has been unmounted and ejected. It is now safe to remove the device."
+  echo -e "  ${BOLD}$LABEL has been unmounted and ejected.${NONE} ${GREEN}${BOLD}It is now safe to remove the device.${NONE}"
 }
 
 # git
@@ -126,6 +163,8 @@ function alias-help () {
   echo -e "  ${GREEN}mount-ext${NONE}:       ${BOLD}${BLUE}mount ${NONE} ${ITALICS}${YELLOW}/dev/sda1${NONE} to ${ITALICS}${YELLOW}~/my/external${NONE}"
   echo -e "  ${GREEN}umount-ext${NONE}:      ${BOLD}${BLUE}umount ${NONE} ${ITALICS}${YELLOW}~/my/external${NONE}"
   echo ""
+  echo -e "  ${GREEN}setps1${NONE}:          ${BOLD}${BLUE}SET PS1=${NONE}\"${ITALICS}${YELLOW}COLOR_(ROYGBIV) PROMPT_TEXT\"${NONE}"
+  echo ""
   echo -e "  ${GREEN}gs${NONE}:              ${BOLD}${BLUE}git status${NONE} ${ITALICS}${YELLOW}- OR -${NONE} ${BOLD}${BLUE}ls -la${NONE}"
   echo -e "  ${GREEN}atgloboconfig${NONE}:   ${BOLD}${BLUE}git config local email to: ${NONE} ${ITALICS}${YELLOW}avandrey@globodon.com${NONE}"
   echo -e "  ${GREEN}atgithubconfig${NONE}:  ${BOLD}${BLUE}git config local email to: ${NONE} ${ITALICS}${YELLOW}aaron.vandrey@gmail.com${NONE}"
@@ -135,25 +174,29 @@ function alias-help () {
 function join_array { local IFS="$1"; shift; echo "$*"; }
 
 function ellipsedPath {
-  local paths=($(echo $PWD | tr "/" " "))
   local w=""
+  local paths=""
+  OIFS="$IFS"
+  IFS=" "
+  read -r -a paths <<< "$(echo "$PWD" | tr "/" " ")"
 
-  if [ "${paths[0]}" == "home" -a "${paths[1]}" == "${whoami}" ]; then
+  wai=$(whoami)
+  if [ "${paths[0]}" == "home" ] && [ "${paths[1]}" == "${wai}" ]; then
     w='~'
-    paths=(${paths[*]:2})
+    read -r -a paths <<< "${paths[*]:2}"
   else
     w="/${paths[0]}"
-    paths=(${paths[*]:1})
+    read -r -a paths <<< "${paths[*]:1}"
   fi;
 
   if (( ${#paths[@]} >= 3 )); then
     w="$w/..."
-    paths=(${paths[@]: -2})
+    read -r -a paths <<< "${paths[@]: -2}"
   fi;
 
-  w="$(join_array "/" $w ${paths[*]})"
-
-  echo $w
+  w=$(join_array '/' "$w" "${paths[@]}")
+  IFS="$OIFS"
+  echo "$w"
 }
 
 # git
@@ -166,18 +209,22 @@ function gitIsBehind {
 }
 
 function gitNumCommitsDiff {
-  (git status 2>/dev/null | egrep -o "by\s[0-9]+\s" | cut -d' ' -f2) || echo ""
+  (git status 2>/dev/null | grep -E -o "by\s[0-9]+\s" | cut -d' ' -f2) || echo ""
 }
 
 function gitCurrentBranch {
-  (git branch 2>/dev/null | grep -i '*' | cut -d' ' -f2) || echo ""
+  (git branch 2>/dev/null | grep -i '\*' | cut -d' ' -f2) || echo ""
 }
 
 function gitDiffRemote {
-  local num=$(gitNumCommitsDiff)
-  local isAhead=$(gitIsAhead)
-  local isBehind=$(gitIsBehind)
+  local num=
+  local isAhead=
+  local isBehind=
   local symbol=
+
+  num=$(gitNumCommitsDiff)
+  isAhead=$(gitIsAhead)
+  isBehind=$(gitIsBehind)
 
   if [ "$isAhead" = "true" ]; then
     symbol="\xE2\x86\x91"
@@ -195,20 +242,20 @@ function hashtag {
 }
 
 function currentTime {
-  echo "[$blue\@$cstop]"
+  echo "[$BLUE\@$NONE]"
 }
 
 function userHost {
   echo "\u"
 }
 
-cstop="\[\e[m\]"
-grey="\[\e[30m\]"
-green="\[\e[32m\]"
-yellow="\[\e[33m\]"
-blue="\[\e[34m\]"
+function seperator {
+  printf '%.s═' $(seq 1 "$(tput cols)")
+}
 
-export PS1="$(currentTime) $(userHost):\$(ellipsedPath)$grey$(hashtag)$cstop\$(test '`gitIsAhead`' == 'true' && printf $green)\$(test '`gitIsBehind`' == 'true' && printf $yellow)\$(gitDiffRemote)$cstop$ \[$(tput sgr0)\]"
+PromptString1="\n$HOTPINK$(seperator)$NONE\n$(currentTime) $(userHost) : \$(ellipsedPath)$GRAY$(hashtag)$NONE\$(test '$(gitIsAhead)' == 'true' && printf $GREEN)\$(test '$(gitIsBehind)' == 'true' && printf $YELLOW)\$(gitDiffRemote)$NONE$ \[$(tput sgr0)\]"
+export PS1=${PromptString1}
+export SUDO_EDITOR="/usr/bin/gedit"
 
 # set PATH so it includes user's private bin directories
 PATH=$PATH:$HOME/bin:$HOME/.local/bin:$HOME/.local/scripts
