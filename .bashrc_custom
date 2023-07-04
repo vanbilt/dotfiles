@@ -257,7 +257,8 @@ function seperator {
   printf '%.s═' $(seq 1 "$(tput cols)")
 }
 
-PromptString1="$HOTPINK$(seperator)$NONE\n$(currentTime) $(userHost) : \$(ellipsedPath)$GRAY$(hashtag)$NONE\$(gitDiffRemote)$NONE$ \[$(tput sgr0)\]"
+# PromptString1="$HOTPINK$(seperator)$NONE\n
+PromptString1="$(currentTime) $(userHost) : \$(ellipsedPath)$GRAY$(hashtag)$NONE\$(gitDiffRemote)$NONE$ \[$(tput sgr0)\]"
 export PS1=${PromptString1}
 export SUDO_EDITOR="/usr/bin/gedit"
 
