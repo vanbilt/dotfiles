@@ -17,7 +17,7 @@ NONE='\033[0m'
 ORANGE='\033[38;5;208m'
 PURPLE='\033[35m'
 RED='\033[31m'
-WHITE='\033[37m'
+#WHITE='\033[37m'
 YELLOW='\033[33m'
 HOTPINK='\033[38;5;205m'
 
@@ -257,9 +257,31 @@ function seperator {
   printf '%.s═' $(seq 1 "$(tput cols)")
 }
 
+
+function is_git {
+  if [ -d ".git" ]; then
+    # Get the current branch
+    # BRANCH=$(git branch --show-current)
+
+    #echo "${INDIGO}$BRANCH${NONE}"
+    echo "(${INDIGO}git${NONE}) "
+  fi
+}
+
 # PromptString1="$HOTPINK$(seperator)$NONE\n
-PromptString1="$(currentTime) $(userHost) : \$(ellipsedPath)$GRAY$(hashtag)$NONE\$(gitDiffRemote)$NONE$ \[$(tput sgr0)\]"
-export PS1=${PromptString1}
+#PromptString1="$(currentTime) $(userHost) : \$(ellipsedPath)$GRAY$(hashtag)$NONE\$(gitDiffRemote)$NONE$ \[$(tput sgr0)\]"
+# export PS1=${PromptString1}
+
+# Set the prompt color
+# export PS1="${GREEN}$(__git_ps1)${NONE}$ "
+
+#PROMPT_STRING_ONE="${HOTPINK}\u${NONE} :: ${ITALICS}\w${NONE} ($(is_git)) ${BLUE}${BOLD}$>${NONE} "
+export PROMPT_DIRTRIM=2
+# export PS1='\u@\h:\W\$ '
+# export PS1=$PROMPT_STRING_ONE
+
+PROMPT_COMMAND='PS1="${HOTPINK}\u${NONE} :: ${ITALICS}\w${NONE} $(is_git)${BLUE}${BOLD}$>${NONE} "'
+
 export SUDO_EDITOR="/usr/bin/gedit"
 
 # set PATH so it includes user's private bin directories
