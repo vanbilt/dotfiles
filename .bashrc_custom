@@ -1,12 +1,6 @@
 #!/bin/bash
 # shellcheck source=/dev/null
 
-########################
-#                      #
-# CUSTOM BASH COMMANDS #
-#                      #
-########################
-
 source ~/.fancy-bash.sh
 source ~/.aliases.sh
 
@@ -22,7 +16,6 @@ function trimBranchName {
 
   echo "$trimmedBranchName"
 }
-
 
 # from James
 function join_array { local IFS="$1"; shift; echo "$*"; }
@@ -55,9 +48,13 @@ function ellipsedPath {
   echo "$w"
 }
 
-# export PROMPT_DIRTRIM=2
-# PROMPT_COMMAND='PS1="${HOTPINK}\u${NONE} :: ${ITALICS}$(ellipsedPath)${NONE} "
-# PSI: ${BLUE}${BOLD} $>${NONE} "'
+export PS1_GREEN="\[\033[32m\]"
+export PS1_HOTPINK="\[\033[38;5;205m\]"
+export PS1_YELLOW="\[\033[33m\]"
+
+export PS1_BOLD="\[\033[1m\]"
+export PS1_ITALICS="\[\033[3m\]"
+export PS1_NONE="\[\033[0m\]"
 
 COLOR=""
 BRANCH=""
@@ -77,40 +74,40 @@ function parse_git_for_variables {
 
 	if [[ ${git_status} =~ ${clean_pattern} ]];
   then
-    COLOR="${GREEN}"
+    COLOR="${PS1_GREEN}"
 		STATE="${CHECK_MARK}"
 	fi
 
   if [[ ${git_status} =~ ${dirty_pattern} ]];
   then
-    COLOR="${YELLOW}"
-    STATE="${YELLOW}${WARNING_SIGN}${NONE}"
+    COLOR="${PS1_YELLOW}"
+    STATE="${PS1_YELLOW}${WARNING_SIGN}${PS1_NONE}"
   fi
 
 	if [[ ${git_status} =~ ${remote_pattern} ]];
   then
 		if [[ ${BASH_REMATCH[1]} == "ahead" ]];
     then
-			REMOTE="${GREEN}${ARROW_UP}${NONE}"
+			REMOTE="${PS1_GREEN}${ARROW_UP}${PS1_NONE}"
 		else
-			REMOTE="${YELLOW}${ARROW_DOWN}${NONE}"
+			REMOTE="${PS1_YELLOW}${ARROW_DOWN}${PS1_NONE}"
 		fi
 	fi
 
 	if [[ ${git_status} =~ ${diverge_pattern} ]];
   then
-		REMOTE="${YELLOW}${ARROW_UP_DOWN}${NONE}"
+		REMOTE="${PS1_YELLOW}${ARROW_UP_DOWN}${PS1_NONE}"
 	fi
 
   # better git/branch symbol? http://www.whiteboardcoder.com/2016/03/sbt-customize-shell-prompt-with-git.html
 	if [[ ${git_status} =~ ${branch_pattern} ]];
   then
 		BRANCH=${BASH_REMATCH[1]}
-    GIT_INFO="(${COLOR}${REMOTE} ${STATE}${NONE} )"
-    PSI="${BLUE}${BOLD}${NEPTUNE} >${NONE} "
+    GIT_INFO="(${COLOR}${REMOTE} ${STATE}${PS1_NONE} )"
+    PSI="${PS1_BLUE}${PS1_BOLD}${NEPTUNE} >${PS1_NONE} "
   else
     BRANCH=""
-    PSI="${BLUE}${BOLD}$ >${NONE} "
+    PSI="${PS1_BLUE}${PS1_BOLD}$ >${PS1_NONE} "
 	fi
 }
 
@@ -118,7 +115,7 @@ function parse_git_for_variables {
 function prompt_func() {
   parse_git_for_variables
 
-  prompt="${HOTPINK}\\u${NONE} :: ${ITALICS}$(ellipsedPath)${NONE}"
+  prompt="${PS1_HOTPINK}\\u${PS1_NONE} :: ${PS1_ITALICS}$(ellipsedPath)${PS1_NONE}"
 
   if [ -z "$BRANCH" ];
   then

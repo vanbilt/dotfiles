@@ -1,4 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# shellcheck source=/dev/null
+
+source ~/.fancy-bash.sh
 
 DEV="$HOME/dev"
 PORTABLE="$HOME/portable"
