@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# COLORS
+export NONE="\[\033[0m\]"
+export GRAY="\[\033[30m\]"
+export RED="\[\033[31m\]"
+export LIGHT_RED="\[\033[1;31m\]"
+export GREEN="\[\033[32m\]"
+export LIGHT_GREEN="\[\033[1;32m\]"
+export YELLOW="\[\033[33m\]"
+export BLUE="\[\033[34m\]"
+export PURPLE="\[\033[35m\]"
+export CYAN="\[\033[36m\]"
+export LIGHT_BLUE="\[\033[1;36m\]"
+export WHITE="\[\033[1;37m\]"
+export LIGHT_GRAY="\[\033[0;37m\]"
+export INDIGO="\[\033[38;5;27m\]"
+export HOTPINK="\[\033[38;5;205m\]"
+export ORANGE="\[\033[38;5;208m\]"
+
+# STYLES
+export INV="\[\e[7m\]"
+export BOLD="\[\033[1m\]"
+export ITALICS="\[\033[3m\]"
+export UNDERLINE="\[\033[4m\]"
+
+# SYMBOLS
+export ARROW_LEFT="\xE2\x86\x90"
+export ARROW_UP="\xE2\x86\x91"
+export ARROW_RIGHT="\xE2\x86\x92"
+export ARROW_DOWN="\xE2\x86\x93"
+export ARROW_LEFT_RIGHT="\xE2\x86\x94"
+export ARROW_UP_DOWN="\xE2\x86\x95"
+export LIGHTNING_BOLT="\xE2\x9A\xA1"
+export CHECK_MARK="\xE2\x9C\x94"
+export HEAVY_CHECK_MARK="\xE2\x9C\x85"
+export CROSS_MARK="\xE2\x9C\x96"
+export HEAVY_CROSS_MARK="\xE2\x9D\x8C"
+export MULTIPLE_STARS="\xE2\x9C\xA8"
+export NEPTUNE="\xE2\x99\x86"
+export WARNING_SIGN="\xE2\x9A\xA0"

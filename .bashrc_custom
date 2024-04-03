@@ -1,178 +1,33 @@
 #!/bin/bash
+# shellcheck source=/dev/null
+
 ########################
 #                      #
 # CUSTOM BASH COMMANDS #
 #                      #
 ########################
 
-# COLORS
-BLUE='\033[34m'
-BOLD='\033[1m'
-CYAN='\033[36m'
-GRAY='\033[30m'
-GREEN='\033[32m'
-INDIGO='\033[38;5;27m'
-ITALICS='\033[3m'
-NONE='\033[0m'
-ORANGE='\033[38;5;208m'
-PURPLE='\033[35m'
-RED='\033[31m'
-#WHITE='\033[37m'
-YELLOW='\033[33m'
-HOTPINK='\033[38;5;205m'
+source ~/.fancy-bash.sh
+source ~/.aliases.sh
 
-# ALIAS
-# directories
-alias skypew='skype -d globodon'
-alias skypep='skype -d gmail'
+function trimBranchName {
+  local branchName="$1"
+  local branchNameLength=${#branchName}
+  local maxBranchNameLength=20
+  local trimmedBranchName="$branchName"
 
-PORTABLE="$HOME/portable"
-DEV="$HOME/dev"
-alias vanbilt='cd ${DEV}/vanbilt';
-alias globodon='cd ~/dev/globodon';
-
-alias tilbilt='tlx -t vanbilt -d ${DEV}/vanbilt/'
-alias tiltools='tlx -t "dm helper" -d ${DEV}/vanbilt/bash-docker-tools/ -c ./tools-menu.sh'
-
-alias tilglobo='tlx -t globodon -d ${DEV}/globodon/'
-alias tildm='tlx -t "dm src" -d ${DEV}/globodon/dataminer-eric'
-alias tilpro='tlx -t "protractor" -d ${DEV}/globodon/dataminer-eric/web/src/test/js/'
-alias tildata='tlx -t "data-afdp src" -d ${DEV}/globodon/data-afdp/'
-alias tilbrb='tlx -t "brb web src" -d ${DEV}/globodon/brbweb/'
-
-alias gitbare='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
-
-# make a directory and then cd into it
-function mkcd () {
-  mkdir -p -- "$1" && cd -P -- "$1" || return;
-}
-
-# make the primary Prompt String (PS1) for this terminal different than the default
-setps1() {
-  # UPPER case
-  case ${1^^} in
-  "R" | "RED")
-    ps1color=$RED
-    ;;
-  "O" | "ORANGE")
-    ps1color=$ORANGE
-    ;;
-  "Y" | "YELLOW")
-    ps1color=$YELLOW
-    ;;
-  "G" | "GREEN")
-    ps1color=$GREEN
-    ;;
-  "B" | "BLUE")
-    ps1color=$BLUE
-    ;;
-  "I" | "INDIGO")
-    ps1color=$CYAN
-    ;;
-  "V" | "VIOLET")
-    ps1color=$PURPLE
-    ;;
-  *)
-    ps1color=$HOTPINK
-    ;;
-  esac
-
-  ps="export PS1='${BOLD}${ps1color}_${2} ::>${NONE} '"
-  eval "${ps}"
-}
-
-# commands
-# system
-function supdawg () {
-  # supdawg came from accidentally typing SUPDATE=(sudo apt update) a lot
-
-  echo -e "\n  ${GREEN}EXECUTING: ${NONE}sudo apt update\n"
-  UPDATE=$( sudo apt update 2>&1 )
-
-  # no need to run any further commands if: "All packages are up to date."
-  match='All packages are up to date.'
-  if [[ -z "${UPDATE}" ]] || [[ $UPDATE == *$match* ]]; then
-    echo -e "${CYAN}  It appears all packages are currently up-to-date${NONE}\n"
-  else
-    echo -e "${CYAN}  It appears some packages can be updated.${NONE}"
-    echo -e "\n  ${GREEN}EXECUTING: ${NONE}apt list --upgradable\n"
-    apt list --upgradable
+  if (( branchNameLength > maxBranchNameLength )); then
+    local trimmedBranchName="${branchName:0:maxBranchNameLength-3}..."
   fi
+
+  echo "$trimmedBranchName"
 }
 
-function myip () {
-  if [ "$1" == 'i' ]; then
-    IP=$(hostname -I | cut -d' ' -f1);
-    echo -e "${GREEN}${BOLD}Internal IP${NONE} is: ${BLUE}${BOLD}$IP";
-  else
-    IP=$(curl -s ipinfo.io/ip);
-    echo -e "${GREEN}${BOLD}External IP${NONE} is:${BLUE}${BOLD} $IP";
-  fi
-}
 
-function cd {
-  builtin cd "$@" && ls -al
-}
-
-LABEL=RealApps
-UUID=0EB4-94A2
-function mount-ext {
-  if lsblk -f | grep -wq $UUID; then
-    echo -e "  ${GREEN}${BOLD}Successfully located${NONE} ${BLUE}${BOLD}Label${NONE}: $LABEL / ${BLUE}${BOLD}UUID:${NONE} $UUID."
-    echo -e "  ${BOLD}Mounting for local use at: ${BLUE}$PORTABLE${NONE}"
-    mkdir -p "$PORTABLE"
-    sudo mount -t vfat -U 0EB4-94A2 "$PORTABLE" -o uid=1000,gid=1000,utf8,dmask=027,fmask=137
-  else
-    echo -e "  ${RED}${BOLD}Unable to locate:${NONE} $LABEL (UUID: $UUID).${NONE}"
-    echo -e "  ${YELLOW}${ITALICS}If it is physically connected it needs to be disconnected and reconnected.${NONE}"
-  fi
-}
-
-function umount-ext {
-  sudo umount /dev/disk/by-uuid/$UUID
-  sudo eject /dev/disk/by-uuid/$UUID
-  echo -e "  ${BOLD}$LABEL has been unmounted and ejected.${NONE} ${GREEN}${BOLD}It is now safe to remove the device.${NONE}"
-}
-
-# git
-alias gs='git status || ls -la'
-alias atgloboconfig='git config --local user.email "avandrey@globodon.com"'
-alias atgithubconfig='git config --local user.email "aaron.vandrey@gmail.com"'
-
-function alias-help () {
-  echo -e "  ${GREEN}skypew[ork]${NONE}:     ${BOLD}${BLUE}Skype${NONE} - signed into ${ITALICS}${YELLOW}Globodon${NONE} account"
-  echo -e "  ${GREEN}skypep[ersonal]${NONE}: ${BOLD}${BLUE}Skype${NONE} - signed into ${ITALICS}${YELLOW}Gmail${NONE} account"
-  echo ""
-  echo -e "  ${GREEN}vanbilt${NONE}:         ${BOLD}${BLUE}cd${NONE} into ${ITALICS}${YELLOW}\`/home/vanbilt/dev/vanbilt\`${NONE}"
-  echo -e "  ${GREEN}globodon${NONE}:        ${BOLD}${BLUE}cd${NONE} into ${ITALICS}${YELLOW}\`/home/vanbilt/dev/globodon\`${NONE}"
-  echo ""
-  echo -e "  ${GREEN}tilbilt${NONE}:         New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`vanbilt\`${NONE}"
-  echo -e "  ${GREEN}tiltools${NONE}:        New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`vanbilt/bash-docker-tools\`${NONE}"
-  echo ""
-  echo -e "  ${GREEN}tilglobo${NONE}:        New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon\`${NONE}"
-  echo -e "  ${GREEN}tildm${NONE}:           New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric\`${NONE}"
-  echo -e "  ${GREEN}tilpro${NONE}:          New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric/web/src/test/js/\`${NONE}"
-  echo -e "  ${GREEN}tildata${NONE}:         New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/datam-afdp\`${NONE}"
-  echo -e "  ${GREEN}tilbrb${NONE}:          New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/brbweb\`${NONE}"
-  echo ""
-  echo -e "  ${GREEN}gitbare${NONE}:         ${BOLD}${BLUE}git commands alias ${NONE}for bare git repo ${ITALICS}${YELLOW}\`dotfiles\`${NONE}"
-  echo ""
-  echo -e "  ${GREEN}mkcd${NONE}:            ${BOLD}${BLUE}mkdir && cd${NONE} Make a new directory and cd into it"
-  echo -e "  ${GREEN}myip${NONE}:            ${BOLD}${BLUE}myip${NONE} ${ITALICS}${YELLOW}External IP${NONE} [i] ${ITALICS}${YELLOW}Internal IP${NONE}"
-  echo ""
-  echo -e "  ${GREEN}mount-ext${NONE}:       ${BOLD}${BLUE}mount ${NONE} ${ITALICS}${YELLOW}/dev/sda1${NONE} to ${ITALICS}${YELLOW}~/my/external${NONE}"
-  echo -e "  ${GREEN}umount-ext${NONE}:      ${BOLD}${BLUE}umount ${NONE} ${ITALICS}${YELLOW}~/my/external${NONE}"
-  echo ""
-  echo -e "  ${GREEN}setps1${NONE}:          ${BOLD}${BLUE}SET PS1=${NONE}\"${ITALICS}${YELLOW}COLOR_(ROYGBIV) PROMPT_TEXT\"${NONE}"
-  echo ""
-  echo -e "  ${GREEN}gs${NONE}:              ${BOLD}${BLUE}git status${NONE} ${ITALICS}${YELLOW}- OR -${NONE} ${BOLD}${BLUE}ls -la${NONE}"
-  echo -e "  ${GREEN}atgloboconfig${NONE}:   ${BOLD}${BLUE}git config local email to: ${NONE} ${ITALICS}${YELLOW}avandrey@globodon.com${NONE}"
-  echo -e "  ${GREEN}atgithubconfig${NONE}:  ${BOLD}${BLUE}git config local email to: ${NONE} ${ITALICS}${YELLOW}aaron.vandrey@gmail.com${NONE}"
-}
-
-# terminal
+# from James
 function join_array { local IFS="$1"; shift; echo "$*"; }
 
+# from James
 function ellipsedPath {
   local w=""
   local paths=""
@@ -200,87 +55,80 @@ function ellipsedPath {
   echo "$w"
 }
 
-# git
-function gitIsAhead() {
-  (git status 2>/dev/null | grep -q 'ahead' && echo "true") || echo ""
+# export PROMPT_DIRTRIM=2
+# PROMPT_COMMAND='PS1="${HOTPINK}\u${NONE} :: ${ITALICS}$(ellipsedPath)${NONE} "
+# PSI: ${BLUE}${BOLD} $>${NONE} "'
+
+COLOR=""
+BRANCH=""
+STATE=""
+REMOTE=""
+
+# derived from https://gist.github.com/alampros/1035915
+# refactor color & state into a function
+function parse_git_for_variables {
+	git rev-parse --git-dir &> /dev/null
+	git_status="$(git status 2> /dev/null)"
+  clean_pattern="working tree clean"
+	branch_pattern="^On branch ([^${IFS}]*)"
+	remote_pattern="Your branch is (.*) of"
+	diverge_pattern="Your branch and (.*) have diverged"
+  dirty_pattern="not staged for commit"
+
+	if [[ ${git_status} =~ ${clean_pattern} ]];
+  then
+    COLOR="${GREEN}"
+		STATE="${CHECK_MARK}"
+	fi
+
+  if [[ ${git_status} =~ ${dirty_pattern} ]];
+  then
+    COLOR="${YELLOW}"
+    STATE="${YELLOW}${WARNING_SIGN}${NONE}"
+  fi
+
+	if [[ ${git_status} =~ ${remote_pattern} ]];
+  then
+		if [[ ${BASH_REMATCH[1]} == "ahead" ]];
+    then
+			REMOTE="${GREEN}${ARROW_UP}${NONE}"
+		else
+			REMOTE="${YELLOW}${ARROW_DOWN}${NONE}"
+		fi
+	fi
+
+	if [[ ${git_status} =~ ${diverge_pattern} ]];
+  then
+		REMOTE="${YELLOW}${ARROW_UP_DOWN}${NONE}"
+	fi
+
+  # better git/branch symbol? http://www.whiteboardcoder.com/2016/03/sbt-customize-shell-prompt-with-git.html
+	if [[ ${git_status} =~ ${branch_pattern} ]];
+  then
+		BRANCH=${BASH_REMATCH[1]}
+    GIT_INFO="(${COLOR}${REMOTE} ${STATE}${NONE} )"
+    PSI="${BLUE}${BOLD}${NEPTUNE} >${NONE} "
+  else
+    BRANCH=""
+    PSI="${BLUE}${BOLD}$ >${NONE} "
+	fi
 }
 
-function gitIsBehind {
-  (git status 2>/dev/null | grep -q 'behind' && echo "true") || echo ""
-}
+# derived from https://gist.github.com/alampros/1035915
+function prompt_func() {
+  parse_git_for_variables
 
-function gitNumCommitsDiff {
-  (git status 2>/dev/null | grep -E -o "by\s[0-9]+\s" | cut -d' ' -f2) || echo ""
-}
+  prompt="${HOTPINK}\\u${NONE} :: ${ITALICS}$(ellipsedPath)${NONE}"
 
-function gitCurrentBranch {
-  (git branch 2>/dev/null | grep -i '\*' | cut -d' ' -f2) || echo ""
-}
-
-function gitDiffRemote {
-  local num=
-  local isAhead=
-  local isBehind=
-  local symbol=
-  local color=
-
-  num=$(gitNumCommitsDiff)
-  isAhead=$(gitIsAhead)
-  isBehind=$(gitIsBehind)
-
-  if [ "$isAhead" = "true" ]; then
-    color=$GREEN
-    symbol="\xE2\x86\x91"
-  fi;
-
-  if [ "$isBehind" = "true" ]; then
-    color=$YELLOW
-    symbol="\xE2\x86\x93"
-  fi;
-
-  echo -e "$color$symbol$num$NONE"
-}
-
-function hashtag {
-  echo "#"
-}
-
-function currentTime {
-  echo "[$BLUE\@$NONE]"
-}
-
-function userHost {
-  echo "\u"
-}
-
-function seperator {
-  printf '%.s═' $(seq 1 "$(tput cols)")
-}
-
-
-function is_git {
-  if [ -d ".git" ]; then
-    # Get the current branch
-    # BRANCH=$(git branch --show-current)
-
-    #echo "${INDIGO}$BRANCH${NONE}"
-    echo "(${INDIGO}git${NONE}) "
+  if [ -z "$BRANCH" ];
+  then
+    PS1="${prompt} ${PSI}"
+  else
+    PS1="${prompt} $(echo -e "${GIT_INFO}") \n $(trimBranchName "$BRANCH") $(echo -e "${PSI}")"
   fi
 }
 
-# PromptString1="$HOTPINK$(seperator)$NONE\n
-#PromptString1="$(currentTime) $(userHost) : \$(ellipsedPath)$GRAY$(hashtag)$NONE\$(gitDiffRemote)$NONE$ \[$(tput sgr0)\]"
-# export PS1=${PromptString1}
-
-# Set the prompt color
-# export PS1="${GREEN}$(__git_ps1)${NONE}$ "
-
-#PROMPT_STRING_ONE="${HOTPINK}\u${NONE} :: ${ITALICS}\w${NONE} ($(is_git)) ${BLUE}${BOLD}$>${NONE} "
-export PROMPT_DIRTRIM=2
-# export PS1='\u@\h:\W\$ '
-# export PS1=$PROMPT_STRING_ONE
-
-PROMPT_COMMAND='PS1="${HOTPINK}\u${NONE} :: ${ITALICS}\w${NONE} $(is_git)${BLUE}${BOLD}$>${NONE} "'
+PROMPT_COMMAND=prompt_func
 
 export SUDO_EDITOR="/usr/bin/gedit"
 
