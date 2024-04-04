@@ -19,8 +19,10 @@ alias globodon='cd ~/dev/globodon';
 # open new terminal tab then change directory
 alias tilbilt='tlx -t vanbilt -d ${DEV}/vanbilt/'
 alias tilglobo='tlx -t globodon -d ${DEV}/globodon/'
-alias tildm='tlx -t "dm src" -d ${DEV}/globodon/dataminer-eric'
-alias tildmui='tlx -r -t "dm src" -d ${DEV}/globodon/dataminer-eric/ui'
+alias tildm-prev='tlx -t "dm src" -d ${DEV}/globodon/dataminer-eric-prev'
+alias tildm-next='tlx -t "dm src" -d ${DEV}/globodon/dataminer-eric-next'
+alias tildm-prev-ui='tlx -r -t "dm src" -d ${DEV}/globodon/dataminer-eric-prev/ui'
+alias tildm-next-ui='tlx -r -t "dm src" -d ${DEV}/globodon/dataminer-eric-next/ui'
 
 tilixhint () {
   echo -e "Open a new Tilix tab with the ${BOLD}tlx${NONE} command: "
@@ -100,8 +102,10 @@ function aliases () {
   echo ""
   echo -e "  ${GREEN}tilbilt${NONE}:         New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`vanbilt\`${NONE}"
   echo -e "  ${GREEN}tilglobo${NONE}:        New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon\`${NONE}"
-  echo -e "  ${GREEN}tildm${NONE}:           New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric\`${NONE}"
-  echo -e "  ${GREEN}tildmui${NONE}:         ${BOLD}${BLUE}Tilix${NONE} tab in same window but to the right, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric/ui\`${NONE}"
+  echo -e "  ${GREEN}tildm-prev${NONE}:      New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric-prev\`${NONE}"
+  echo -e "  ${GREEN}tildm-next${NONE}:      New ${BOLD}${BLUE}Tilix${NONE} tab, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric-next\`${NONE}"
+  echo -e "  ${GREEN}tildm-prev-ui${NONE}:   ${BOLD}${BLUE}Tilix${NONE} tab in same window but to the right, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric-prev/ui\`${NONE}"
+  echo -e "  ${GREEN}tildm-next-ui${NONE}:   ${BOLD}${BLUE}Tilix${NONE} tab in same window but to the right, working directory ${ITALICS}${YELLOW}\`globodon/dataminer-eric-next/ui\`${NONE}"
   echo ""
   echo -e "  ${GREEN}gitbare${NONE}:         ${BOLD}${BLUE}git commands alias ${NONE}for bare git repo ${ITALICS}${YELLOW}\`dotfiles\`${NONE}"
   echo ""
