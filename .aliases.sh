@@ -124,10 +124,10 @@ function aliases () {
   echo -e "  ${GREEN}umount-ext${NONE}:      ${BOLD}${BLUE}umount ${NONE} ${ITALICS}${YELLOW}~/my/external${NONE}"
   echo ""
   echo -e "  ${GREEN}gs${NONE}:              ${BOLD}${BLUE}git status${NONE} ${ITALICS}${YELLOW}- OR -${NONE} ${BOLD}${BLUE}ls -la${NONE}"
-  echo -e "  ${GREEN}atgloboconfig${NONE}:   ${BOLD}${BLUE}git config local email to: ${NONE} ${ITALICS}${YELLOW}avandrey@globodon.com${NONE}"
-  echo -e "  ${GREEN}atgithubconfig${NONE}:  ${BOLD}${BLUE}git config local email to: ${NONE} ${ITALICS}${YELLOW}aaron.vandrey@gmail.com${NONE}"
+  echo -e "  ${GREEN}atgloboconfig${NONE}:   ${BOLD}${BLUE}git config local email to: ${NONE}${ITALICS}${YELLOW}avandrey@globodon.com${NONE}"
+  echo -e "  ${GREEN}atgithubconfig${NONE}:  ${BOLD}${BLUE}git config local email to: ${NONE}${ITALICS}${YELLOW}aaron.vandrey@gmail.com${NONE}"
   echo ""
-  echo -e "  ${GREEN}notes${NONE}:           ${BOLD}${BLUE}open VS Code to the notes project located at: ${NONE} ${ITALICS}${YELLOW}~/dev/vanbilt/notes${NONE}"
-  echo -e "  ${GREEN}projects${NONE}:        ${BOLD}${BLUE}open VS Code to the projects project located at: ${NONE} ${ITALICS}${YELLOW}~/dev/vanbilt/projects${NONE}"
+  echo -e "  ${GREEN}notes${NONE}:           ${BOLD}${BLUE}open VS Code to the notes working directory located at: ${NONE}${ITALICS}${YELLOW}~/dev/vanbilt/notes${NONE}"
+  echo -e "  ${GREEN}projects${NONE}:        ${BOLD}${BLUE}open VS Code to the projects working directory located at: ${NONE}${ITALICS}${YELLOW}~/dev/vanbilt/projects${NONE}"
 }
 # alias notes='code ./dev/vanbilt/notes'
