@@ -32,6 +32,12 @@ tilixhint () {
   echo -e "  ${GREEN}-d${NONE} ${YELLOW}directory to open new tab in${NONE}"
 }
 
+# vscode
+# notes
+alias notes='code ./dev/vanbilt/notes'
+# projects
+alias projects='code ./dev/vanbilt/projects'
+
 # git
 alias gs='git status || ls -la'
 alias atgloboconfig='git config --local user.email "avandrey@globodon.com"'
@@ -120,4 +126,8 @@ function aliases () {
   echo -e "  ${GREEN}gs${NONE}:              ${BOLD}${BLUE}git status${NONE} ${ITALICS}${YELLOW}- OR -${NONE} ${BOLD}${BLUE}ls -la${NONE}"
   echo -e "  ${GREEN}atgloboconfig${NONE}:   ${BOLD}${BLUE}git config local email to: ${NONE} ${ITALICS}${YELLOW}avandrey@globodon.com${NONE}"
   echo -e "  ${GREEN}atgithubconfig${NONE}:  ${BOLD}${BLUE}git config local email to: ${NONE} ${ITALICS}${YELLOW}aaron.vandrey@gmail.com${NONE}"
+  echo ""
+  echo -e "  ${GREEN}notes${NONE}:           ${BOLD}${BLUE}open VS Code to the notes project located at: ${NONE} ${ITALICS}${YELLOW}~/dev/vanbilt/notes${NONE}"
+  echo -e "  ${GREEN}projects${NONE}:        ${BOLD}${BLUE}open VS Code to the projects project located at: ${NONE} ${ITALICS}${YELLOW}~/dev/vanbilt/projects${NONE}"
 }
+# alias notes='code ./dev/vanbilt/notes'
