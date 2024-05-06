@@ -34,15 +34,19 @@ tilixhint () {
 
 # vscode
 # notes
-alias notes='code ./dev/vanbilt/notes'
+alias notes='code ~/dev/vanbilt/notes'
 # projects
-alias projects='code ./dev/vanbilt/projects'
+alias projects='code ~/dev/vanbilt/projects'
+# samples
+alias projects='code ~/dev/vanbilt/samples'
+# JavaScripties
+alias javascripties='code ~/dev/vanbilt/JavaScripties'
 
 # git
 alias gs='git status || ls -la'
 alias atgloboconfig='git config --local user.email "avandrey@globodon.com"'
 alias atgithubconfig='git config --local user.email "aaron.vandrey@gmail.com"'
-alias gitbare='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias gitbare='/usr/bin/git --git-dir=$HOME/dotfiles.git --work-tree=$HOME'
 
 # override cd to change directory and then list contents
 function cd {
