@@ -103,6 +103,31 @@ function umount-ext {
   echo -e "  ${BOLD}$LABEL has been unmounted and ejected.${NONE} ${GREEN}${BOLD}It is now safe to remove the device.${NONE}"
 }
 
+function webcam-config {
+  V4L2_COMMANDS=(
+    "v4l2-ctl --list-devices"
+    "sudo v4l2-ctl -d /dev/video0 --set-ctrl=focus_automatic_continuous=false"
+    "sudo v4l2-ctl -d /dev/video0 --set-ctrl=focus_absolute=0"
+    "sudo v4l2-ctl -d /dev/video0 --set-ctrl=zoom_absolute=100"
+    "sudo v4l2-ctl -d /dev/video0 --set-ctrl=sharpness=200"
+  )
+  n=0
+  length=${#V4L2_COMMANDS[@]}
+
+  # no need to run any further commands if: "Cannot open device /dev/video0, exiting."
+  match='Cannot open device /dev/video0, exiting.'
+  if [[ -z "${V4L2_COMMANDS[n]}" ]] || [[ ${V4L2_COMMANDS[n]} == *$match* ]]; then
+    echo -e "${CYAN}  Unable to locate a webcam${NONE}"
+  else
+    n=1
+    echo -e "${CYAN}  Webcam located - running config commands.${NONE}"
+    for ((i = n; i < length; i++)); do
+      echo -e "  ${GREEN}${BOLD}EXECUTING:${NONE} ${V4L2_COMMANDS[i]}"
+      eval "${V4L2_COMMANDS[i]}"
+    done
+  fi
+}
+
 function aliases () {
   echo -e "  ${GREEN}skypew[ork]${NONE}:     ${BOLD}${BLUE}Skype${NONE} - signed into ${ITALICS}${YELLOW}Globodon${NONE} account"
   echo -e "  ${GREEN}skypep[ersonal]${NONE}: ${BOLD}${BLUE}Skype${NONE} - signed into ${ITALICS}${YELLOW}Gmail${NONE} account"
@@ -123,6 +148,8 @@ function aliases () {
   echo -e "  ${GREEN}supdawg${NONE}:         ${BOLD}${BLUE}sudo apt update ${NONE} Then ${CYAN}apt list --upgradable${NONE} OR ${CYAN}It appears all packages are up-to-date${NONE}"
   echo -e "  ${GREEN}mkcd${NONE}:            ${BOLD}${BLUE}mkdir && cd${NONE} Make a new directory and cd into it"
   echo -e "  ${GREEN}myip${NONE}:            ${BOLD}${BLUE}myip${NONE} ${ITALICS}${YELLOW}External IP${NONE} [i] ${ITALICS}${YELLOW}Internal IP${NONE}"
+  echo ""
+  echo -e "  ${GREEN}webcam-config${NONE}:   ${BOLD}${BLUE}config webcam at ${NONE} ${ITALICS}${YELLOW}/dev/video0${NONE} to ${ITALICS}${YELLOW}focus, zoom, and sharpness${NONE}"
   echo ""
   echo -e "  ${GREEN}mount-ext${NONE}:       ${BOLD}${BLUE}mount ${NONE} ${ITALICS}${YELLOW}/dev/sda1${NONE} to ${ITALICS}${YELLOW}~/my/external${NONE}"
   echo -e "  ${GREEN}umount-ext${NONE}:      ${BOLD}${BLUE}umount ${NONE} ${ITALICS}${YELLOW}~/my/external${NONE}"
