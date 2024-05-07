@@ -38,7 +38,7 @@ alias notes='code ~/dev/vanbilt/notes'
 # projects
 alias projects='code ~/dev/vanbilt/projects'
 # samples
-alias projects='code ~/dev/vanbilt/samples'
+alias samples='code ~/dev/vanbilt/samples'
 # JavaScripties
 alias javascripties='code ~/dev/vanbilt/JavaScripties'
 
