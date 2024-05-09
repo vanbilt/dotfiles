@@ -3,6 +3,7 @@
 
 source ~/.fancy-bash.sh
 source ~/.aliases.sh
+source ~/.functions.sh
 
 function trimBranchName {
   local branchName="$1"

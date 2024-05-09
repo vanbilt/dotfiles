@@ -4,9 +4,6 @@
 source ~/.fancy-bash.sh
 
 DEV="$HOME/dev"
-PORTABLE="$HOME/portable"
-LABEL=RealApps
-UUID=FDF2-D33E
 
 # ALIAS
 alias skypew='skype -d globodon'
@@ -14,7 +11,7 @@ alias skypep='skype -d gmail'
 
 # change directory in current terminal
 alias vanbilt='cd ${DEV}/vanbilt';
-alias globodon='cd ~/dev/globodon';
+alias globodon='cd ${DEV}/globodon';
 
 # open new terminal tab then change directory
 alias tilbilt='tlx -t vanbilt -d ${DEV}/vanbilt/'
@@ -24,109 +21,17 @@ alias tildm-next='tlx -t "dm src" -d ${DEV}/globodon/dataminer-eric-next'
 alias tildm-prev-ui='tlx -r -t "dm src" -d ${DEV}/globodon/dataminer-eric-prev/ui'
 alias tildm-next-ui='tlx -r -t "dm src" -d ${DEV}/globodon/dataminer-eric-next/ui'
 
-tilixhint () {
-  echo -e "Open a new Tilix tab with the ${BOLD}tlx${NONE} command: "
-  echo -e "${BLUE}tlx${NONE}"
-  echo -e "  ${GREEN}-r${NONE} ${YELLOW}open in same tab, but to the right${NONE}"
-  echo -e "  ${GREEN}-t${NONE} ${YELLOW}title of new tab${NONE}"
-  echo -e "  ${GREEN}-d${NONE} ${YELLOW}directory to open new tab in${NONE}"
-}
-
-# vscode
-# notes
-alias notes='code ~/dev/vanbilt/notes'
-# projects
-alias projects='code ~/dev/vanbilt/projects'
-# samples
-alias samples='code ~/dev/vanbilt/samples'
-# JavaScripties
-alias javascripties='code ~/dev/vanbilt/JavaScripties'
+# launch vscode with the working directory set
+alias notes='code ${DEV}/vanbilt/notes'
+alias projects='code ${DEV}/vanbilt/projects'
+alias samples='code ${DEV}/vanbilt/samples'
+alias javascripties='code ${DEV}/vanbilt/JavaScripties'
 
 # git
 alias gs='git status || ls -la'
 alias atgloboconfig='git config --local user.email "avandrey@globodon.com"'
 alias atgithubconfig='git config --local user.email "aaron.vandrey@gmail.com"'
 alias gitbare='/usr/bin/git --git-dir=$HOME/dotfiles.git --work-tree=$HOME'
-
-# override cd to change directory and then list contents
-function cd {
-  builtin cd "$@" && ls -al
-}
-
-# make a directory and then cd into it
-function mkcd () {
-  mkdir -p -- "$1" && cd -P -- "$1" || return;
-}
-
-function myip () {
-  if [ "$1" == 'i' ]; then
-    IP=$(hostname -I | cut -d' ' -f1);
-    echo -e "${GREEN}${BOLD}Internal IP${NONE} is: ${BLUE}${BOLD}$IP";
-  else
-    IP=$(curl -s ipinfo.io/ip);
-    echo -e "${GREEN}${BOLD}External IP${NONE} is:${BLUE}${BOLD} $IP";
-  fi
-}
-
-function supdawg () {
-  # supdawg came from accidentally typing SUPDATE=(sudo apt update) a lot
-
-  echo -e "\n  ${GREEN}EXECUTING: ${NONE}sudo apt update\n"
-  UPDATE=$( sudo apt update 2>&1 )
-
-  # no need to run any further commands if: "All packages are up to date."
-  match='All packages are up to date.'
-  if [[ -z "${UPDATE}" ]] || [[ $UPDATE == *$match* ]]; then
-    echo -e "${CYAN}  It appears all packages are up-to-date${NONE}\n"
-  else
-    echo -e "${CYAN}  It appears some packages can be updated.${NONE}"
-    echo -e "\n  ${GREEN}EXECUTING: ${NONE}apt list --upgradable\n"
-    apt list --upgradable
-  fi
-}
-
-function mount-ext {
-  if lsblk -f | grep -wq $UUID; then
-    echo -e "  ${GREEN}${BOLD}Successfully located${NONE} ${BLUE}${BOLD}Label${NONE}: $LABEL / ${BLUE}${BOLD}UUID:${NONE} $UUID."
-    echo -e "  ${BOLD}Mounting for local use at: ${BLUE}$PORTABLE${NONE}"
-    mkdir -p "$PORTABLE"
-    sudo mount -t vfat -U "$UUID" "$PORTABLE" -o uid=1000,gid=1000,utf8,dmask=027,fmask=137
-  else
-    echo -e "  ${RED}${BOLD}Unable to locate:${NONE} $LABEL (UUID: $UUID).${NONE}"
-    echo -e "  ${YELLOW}${ITALICS}If it is physically connected it needs to be disconnected and reconnected.${NONE}"
-  fi
-}
-
-function umount-ext {
-  sudo umount /dev/disk/by-uuid/$UUID
-  sudo eject /dev/disk/by-uuid/$UUID
-  echo -e "  ${BOLD}$LABEL has been unmounted and ejected.${NONE} ${GREEN}${BOLD}It is now safe to remove the device.${NONE}"
-}
-
-function webcam-config {
-  V4L2_COMMANDS=(
-    "v4l2-ctl --list-devices"
-    "sudo v4l2-ctl -d /dev/video0 --set-ctrl=focus_automatic_continuous=false"
-    "sudo v4l2-ctl -d /dev/video0 --set-ctrl=focus_absolute=0"
-    "sudo v4l2-ctl -d /dev/video0 --set-ctrl=zoom_absolute=100"
-    "sudo v4l2-ctl -d /dev/video0 --set-ctrl=sharpness=200"
-  )
-  n=0
-  length=${#V4L2_COMMANDS[@]}
-
-  # no need to run any further commands if: "Cannot open device /dev/video0, exiting."
-  match='Cannot open device /dev/video0, exiting.'
-  if [[ -z "${V4L2_COMMANDS[n]}" ]] || [[ ${V4L2_COMMANDS[n]} == *$match* ]]; then
-    echo -e "${CYAN}  Unable to locate a webcam${NONE}"
-  else
-    n=1
-    echo -e "${CYAN}  Webcam located - running config commands.${NONE}"
-    for ((i = n; i < length; i++)); do
-      echo -e "  ${GREEN}${BOLD}EXECUTING:${NONE} ${V4L2_COMMANDS[i]}"
-      eval "${V4L2_COMMANDS[i]}"
-    done
-  fi
-}
 
 function aliases () {
   echo -e "  ${GREEN}skypew[ork]${NONE}:     ${BOLD}${BLUE}Skype${NONE} - signed into ${ITALICS}${YELLOW}Globodon${NONE} account"
@@ -158,7 +63,6 @@ function aliases () {
   echo -e "  ${GREEN}atgloboconfig${NONE}:   ${BOLD}${BLUE}git config local email to: ${NONE}${ITALICS}${YELLOW}avandrey@globodon.com${NONE}"
   echo -e "  ${GREEN}atgithubconfig${NONE}:  ${BOLD}${BLUE}git config local email to: ${NONE}${ITALICS}${YELLOW}aaron.vandrey@gmail.com${NONE}"
   echo ""
-  echo -e "  ${GREEN}notes${NONE}:           ${BOLD}${BLUE}open VS Code to the notes working directory located at: ${NONE}${ITALICS}${YELLOW}~/dev/vanbilt/notes${NONE}"
-  echo -e "  ${GREEN}projects${NONE}:        ${BOLD}${BLUE}open VS Code to the projects working directory located at: ${NONE}${ITALICS}${YELLOW}~/dev/vanbilt/projects${NONE}"
+  echo -e "  ${GREEN}notes${NONE}:           ${BOLD}${BLUE}open VS Code to the notes working directory located at: ${NONE}${ITALICS}${YELLOW}${DEV}/vanbilt/notes${NONE}"
+  echo -e "  ${GREEN}projects${NONE}:        ${BOLD}${BLUE}open VS Code to the projects working directory located at: ${NONE}${ITALICS}${YELLOW}${DEV}/vanbilt/projects${NONE}"
 }
-# alias notes='code ./dev/vanbilt/notes'
