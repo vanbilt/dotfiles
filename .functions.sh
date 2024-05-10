@@ -86,3 +86,24 @@ function webcam-config {
     done
   fi
 }
+
+# s4l = SkypeForLinux
+# accepts exactly one argument for domain
+# only accepts gmail or globodon currently
+function s4l() {
+  if [ $# -ne 1 ]; then
+    echo -e "${RED}Please provide a (required) domain for this SkypeForLinux script.${NONE}"
+  else
+    DOMAIN=$1
+
+    case $DOMAIN in
+      "gmail" | "globodon")
+        echo -e "\n${GREEN}LAUNCHING ${NONE} ${BLUE}Skype for ${DOMAIN^^}\n"
+        eval "$(skypeforlinux --secondary --datapath=/home/vanbilt/.skype/"${DOMAIN}")"
+      ;;
+      *)
+        echo -e "${RED}Unrecognized domain: ${DOMAIN}${NONE}"
+      ;;
+    esac
+  fi
+}
