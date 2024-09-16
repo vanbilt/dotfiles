@@ -12,9 +12,22 @@ function cd {
   builtin cd "$@" && ls -al
 }
 
+function open {
+  if [[ -n $1 ]]; then
+    xdg-open "$1" &>/dev/null
+  else
+    echo -e "  ${RED}No file or directory specified.${NONE}"
+  fi
+}
+
 # make a directory and then cd into it
 function mkcd () {
   mkdir -p -- "$1" && cd -P -- "$1" || return;
+}
+
+# run node cli wordle game
+function wordle {
+  (cd ~/dev/vanbilt/JavaScripties && nvm use && npm run start)
 }
 
 function tilixhint () {
@@ -66,7 +79,7 @@ function webcam-config {
     "v4l2-ctl --list-devices"
     "sudo v4l2-ctl -d /dev/video0 --set-ctrl=focus_automatic_continuous=true"
     "sudo v4l2-ctl -d /dev/video0 --set-ctrl=focus_absolute=0"
-    "sudo v4l2-ctl -d /dev/video0 --set-ctrl=zoom_absolute=300"
+    "sudo v4l2-ctl -d /dev/video0 --set-ctrl=zoom_absolute=100"
     "sudo v4l2-ctl -d /dev/video0 --set-ctrl=sharpness=150"
   )
 
@@ -84,27 +97,5 @@ function webcam-config {
       echo -e "  ${GREEN}${BOLD}EXECUTING:${NONE} ${V4L2_COMMANDS[i]}"
       eval "${V4L2_COMMANDS[i]}"
     done
-  fi
-}
-
-# skype = SkypeForLinux
-# accepts exactly one argument for domain
-# only accepts gmail or globodon currently
-function skype() {
-  if [ $# -ne 1 ]; then
-    echo -e "${RED}Please provide a (required) domain for this SkypeForLinux script.${NONE}"
-  else
-    DOMAIN=$1
-    ADDRESSEE=$([ "$DOMAIN" == "gmail" ] && echo "STEWART" || echo "TJ")
-
-    case $DOMAIN in
-      "gmail" | "globodon")
-        echo -e "\n${GREEN}LAUNCHING ${NONE} ${BLUE}Skype for ${ADDRESSEE^^}\n"
-        eval "$(skypeforlinux --secondary --datapath=/home/vanbilt/.skype/"${DOMAIN}")"
-      ;;
-      *)
-        echo -e "${RED}Unrecognized domain: ${DOMAIN}${NONE}"
-      ;;
-    esac
   fi
 }

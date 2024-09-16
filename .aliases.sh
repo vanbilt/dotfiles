@@ -9,9 +9,11 @@ DEV="$HOME/dev"
 alias skypew='skype -d globodon'
 alias skypep='skype -d gmail'
 
+alias npr='npm run'
+
 # change directory in current terminal
-alias vanbilt='cd ${DEV}/vanbilt';
-alias globodon='cd ${DEV}/globodon';
+alias vanbilt='cd ${DEV}/vanbilt'
+alias globodon='cd ${DEV}/globodon'
 
 # open new terminal tab then change directory
 alias tilbilt='tlx -t vanbilt -d ${DEV}/vanbilt/'
@@ -29,6 +31,7 @@ alias javascripties='code ${DEV}/vanbilt/JavaScripties'
 
 # git
 alias gs='git status || ls -la'
+alias gss='git status -s || ls -la'
 alias atgloboconfig='git config --local user.email "avandrey@globodon.com"'
 alias atgithubconfig='git config --local user.email "aaron.vandrey@gmail.com"'
 alias gitbare='/usr/bin/git --git-dir=$HOME/dotfiles.git --work-tree=$HOME'
