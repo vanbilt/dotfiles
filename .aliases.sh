@@ -25,13 +25,12 @@ alias tildm-next-ui='tlx -r -t "dm src" -d ${DEV}/globodon/dataminer-eric-next/u
 
 # launch vscode with the working directory set
 alias notes='code ${DEV}/vanbilt/notes'
-alias projects='code ${DEV}/vanbilt/projects'
 alias samples='code ${DEV}/vanbilt/samples'
-alias javascripties='code ${DEV}/vanbilt/JavaScripties'
+alias javascripties='code ${DEV}/vanbilt/javascripties'
 
 # git
-alias gs='git status || ls -la'
-alias gss='git status -s || ls -la'
+alias gs='git status || ls -1 --group-directories-first'
+alias gss='git status -s || -1  --group-directories-first'
 alias atgloboconfig='git config --local user.email "avandrey@globodon.com"'
 alias atgithubconfig='git config --local user.email "aaron.vandrey@gmail.com"'
 alias gitbare='/usr/bin/git --git-dir=$HOME/dotfiles.git --work-tree=$HOME'

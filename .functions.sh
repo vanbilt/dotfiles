@@ -9,7 +9,11 @@ UUID=FDF2-D33E
 
 # override cd to change directory and then list contents
 function cd {
-  builtin cd "$@" && ls -al
+  builtin cd "$@" && ls -1 --group-directories-first
+}
+
+function list {
+  ls -1 --group-directories-first
 }
 
 function open {
@@ -23,11 +27,6 @@ function open {
 # make a directory and then cd into it
 function mkcd () {
   mkdir -p -- "$1" && cd -P -- "$1" || return;
-}
-
-# run node cli wordle game
-function wordle {
-  (cd ~/dev/vanbilt/JavaScripties && nvm use && npm run start)
 }
 
 function tilixhint () {
